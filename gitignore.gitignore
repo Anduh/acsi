@@ -1,6 +1,0 @@
-# Ignores .o files generated from working with ASCI and the compiled 'acsi'-program itself
-*.o
-acsi
-
-# Ignores all test thml files
-*.html
