@@ -3,6 +3,9 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <sys/file.h>
 #include <signal.h>
 #include <errno.h>
 #include <unistd.h>
@@ -15,7 +18,7 @@ int main (int argc, char *argv[]){
 	struct sigaction sa;
 	sa.sa_handler = handler;
 	if (argc != 2){
-		fprintf(stderr,"ACSI Usage: ./acsi <filename>\n",argv[0]);
+		fprintf(stderr,"ACSI Usage: ./acsi <filename>\n");
 		exit(-1);
 	}
 	if ((childpid = fork()) == 0){
@@ -26,6 +29,6 @@ int main (int argc, char *argv[]){
 		exit(0);
 	}
 	while ((parentpid = wait(&status)) > 0);
-	printf("ASCI finished succesfully!\n", getpid());
+	printf("ASCI finished succesfully!\n");
 	return 1;
 }
