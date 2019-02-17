@@ -22,6 +22,7 @@ int main (int argc, char *argv[]){
 		exit(-1);
 	}
 	if ((childpid = fork()) == 0){
+		sigaction(SIGINT, &sa, NULL);// starts signal handler 
 		char *temp = malloc(50*sizeof(char));
 		strcpy(temp, argv[1]);
 		readcode(temp);//main portion of the program
