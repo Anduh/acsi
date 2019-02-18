@@ -9,26 +9,24 @@
 
 /* taglib.c contains all the functions that deal with searching throught the file and doing text manipulation*/
 
-void txtfind(char a, FILE *fip, FILE *fop){
-	if( a == '>'){
-		char *tempstr = malloc(301*sizeof(char));
-		char *tagstr = malloc(22*sizeof(char));
-		
-		if(savetxt(fip, tempstr) <= 1){ // if the section between two html tags contains only spaces and tabs, it ignore the the section and moves on 
-			fputc(a,fop);
-			fprintf(fop, "%s", tempstr);
-			free(tempstr);
-			free(tagstr);
-			return;
-		}
-		strcpy(tagstr, tagname(tempstr)); //creates a i18n-tagname based on the il8n-field
-		placetag(fop, tagstr, tempstr); //copies the tagname & content of i18n-field in the output file
+void txtfind(FILE *fip, FILE *fop){
+	char *tempstr = malloc(301*sizeof(char));
+	char *tagstr = malloc(22*sizeof(char));
+	
+	if(savetxt(fip, tempstr) <= 1){ // if the section between two html tags contains only spaces and tabs, it ignore the the section and moves on 
+		fputc('>',fop);
+		fprintf(fop, "%s", tempstr);
 		free(tempstr);
 		free(tagstr);
+		return;
 	}
-	else{
-		fputc(a,fop);
-	}
+	strcpy(tagstr, tagname(tempstr)); //creates a i18n-tagname based on the il8n-field
+	if (strlen(tagstr) >= 4)	
+		placetag(fop, tagstr); //copies the tagname & of i18n-field in the output file
+	placestr(fop, tempstr);
+	free(tempstr);
+	free(tagstr);
+
 	return;
 }
 
@@ -92,40 +90,39 @@ char *tagname(char *txtstr){
 	return tagstr;
 }
 
-void placetag(FILE *fop, char *tag, char *tempstr){//places the tag in the proper html section, just before where the segment is located
-	fprintf(fop, " data-i18n=\"%s\" >%s", tag, tempstr);
+void placetag(FILE *fop, char *tag){//places the tag in the proper html section, just before where the segment is located
+	fprintf(fop, " data-i18n=\"%s\" >", tag);
 	return;
 }
 
-void scriptsearch(char a, FILE *fip, FILE *fop){// searches for sections with '<script *>'
-	char b,c,d;
-	if( a == '<'){
-		if((b=fgetc(fip))=='s'){
-			if((c=fgetc(fip))=='r'){
-				if((d=fgetc(fip))=='i'){
-					fputc(a,fop);
-					fputc(b,fop);
-					fputc(c,fop);
-					fputc(d,fop);
-					skipscript(fip,fop);
-				}
-				else{
-					fputc(a,fop);
-					fputc(b,fop);
-					fputc(c,fop);
-					fputc(d,fop);
-				}
+void placestr(FILE *fop, char *tempstr){//places the segment analyzed for
+	fprintf(fop, "%s", tempstr);
+	return;
+}
+
+void scriptsearch(FILE *fip, FILE *fop){// searches for sections with '<script *>'
+	char a,b,c;
+	if((a=fgetc(fip))=='s'){
+		if((b=fgetc(fip))=='r'){
+			if((c=fgetc(fip))=='i'){
+				fputc(a,fop);
+				fputc(b,fop);
+				fputc(c,fop);
+				skipscript(fip,fop);
 			}
 			else{
 				fputc(a,fop);
 				fputc(b,fop);
 				fputc(c,fop);
-			}			
+			}
 		}
 		else{
 			fputc(a,fop);
 			fputc(b,fop);
-		}
+		}			
+	}
+	else{
+		fputc(a,fop);
 	}
 	return;
 }
@@ -141,7 +138,7 @@ void skipscript(FILE *fip, FILE *fop){//skips character until if finds '</script
 							if((f=fgetc(fip)) =='p'){
 								if((g=fgetc(fip)) =='t'){
 									if((h=fgetc(fip)) =='>'){
-										return;
+										break;
 									}
 								}
 							}
@@ -152,6 +149,7 @@ void skipscript(FILE *fip, FILE *fop){//skips character until if finds '</script
 		}
 		fputc(a, fop);
 	}
+	fprintf(fop,"</script>\n");
 	return;
 }
 

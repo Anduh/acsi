@@ -70,8 +70,15 @@ void readcode(char* string){
 	char c;
 	//Main section of the program. searches through the inputfile until it finds a relevant character that results in jumping to work with the 'taglib.c' functions.
 	while((c=fgetc(fip))!=EOF){
-		scriptsearch(c,fip,fop);
-		txtfind(c,fip,fop);
+		if (c == '<'){
+			fputc(c,fop);
+			scriptsearch(fip,fop);
+		}
+		else if (c == '>'){
+			txtfind(fip,fop);
+		}
+		else
+			fputc(c,fop);
 	}
 	addcredits(fop);
 	fclose(fip);
