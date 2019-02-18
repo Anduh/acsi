@@ -15,8 +15,8 @@ tclean:
 
 default: main clean
 
-test: test.o acsilib.o taglib.o
-	$(CC) -o test test.c acsilib.c taglib.c
+test: main.o acsilib.o taglib.o
+	$(CC) -o test main.c acsilib.c taglib.c
 
 t: test
 

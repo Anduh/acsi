@@ -13,4 +13,6 @@ void txtfind(char a, FILE *fip, FILE *fop);
 int savetxt(FILE *fip, char *tempstr);
 char *tagname(char *txtstr);
 void placetag(FILE *fop, char *tag, char *tempstr);
+void scriptsearch(char a, FILE *fip, FILE *fop);
+void skipscript(FILE *fip, FILE *fop);
 void savelist(Taglist *list, int *listsize, char *tag, char *tempstr);

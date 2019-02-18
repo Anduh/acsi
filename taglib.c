@@ -25,7 +25,8 @@ void txtfind(char a, FILE *fip, FILE *fop){
 		placetag(fop, tagstr, tempstr); //copies the tagname & content of i18n-field in the output file
 		free(tempstr);
 		free(tagstr);
-	}else{
+	}
+	else{
 		fputc(a,fop);
 	}
 	return;
@@ -93,6 +94,64 @@ char *tagname(char *txtstr){
 
 void placetag(FILE *fop, char *tag, char *tempstr){//places the tag in the proper html section, just before where the segment is located
 	fprintf(fop, " data-i18n=\"%s\" >%s", tag, tempstr);
+	return;
+}
+
+void scriptsearch(char a, FILE *fip, FILE *fop){// searches for sections with '<script *>'
+	char b,c,d;
+	if( a == '<'){
+		if((b=fgetc(fip))=='s'){
+			if((c=fgetc(fip))=='r'){
+				if((d=fgetc(fip))=='i'){
+					fputc(a,fop);
+					fputc(b,fop);
+					fputc(c,fop);
+					fputc(d,fop);
+					skipscript(fip,fop);
+				}
+				else{
+					fputc(a,fop);
+					fputc(b,fop);
+					fputc(c,fop);
+					fputc(d,fop);
+				}
+			}
+			else{
+				fputc(a,fop);
+				fputc(b,fop);
+				fputc(c,fop);
+			}			
+		}
+		else{
+			fputc(a,fop);
+			fputc(b,fop);
+		}
+	}
+	return;
+}
+
+void skipscript(FILE *fip, FILE *fop){//skips character until if finds '</script>' that ends  sheetworker sections
+	char a,b,c,d,e,f,g,h;
+	while((a=fgetc(fip))!=EOF){
+		if(a=='<'){
+			if((b=fgetc(fip)) =='/'){
+				if((c=fgetc(fip)) =='s'){
+					if((d=fgetc(fip)) =='r'){
+						if((e=fgetc(fip)) =='i'){
+							if((f=fgetc(fip)) =='p'){
+								if((g=fgetc(fip)) =='t'){
+									if((h=fgetc(fip)) =='>'){
+										return;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		fputc(a, fop);
+	}
 	return;
 }
 
