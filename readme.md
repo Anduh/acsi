@@ -2,7 +2,7 @@
 
 Automated Character Sheet Internationalizer (ACSI) is a simple program to place ['i18n'-language tags](https://wiki.roll20.net/Character_Sheet_i18n) into existing [HTML character sheets](https://github.com/Roll20/roll20-character-sheets) made for the [Roll20 platform](https://en.wikipedia.org/wiki/Roll20). The aim is to automate large parts of the currently manual process of introducing `i18n`-tags to existing character sheets, and lower the bar for translating character sheets. 
 
-V0.2 At it's current state, it can only properly create i18n-tags for the most uniform text sections that doesn't contain many linebreaks or special characters. Further it does not play well with neither roll templates or if a sheet contains a sheetworker section.
+V0.2 At it's current state, it can only properly create i18n-tags for the most uniform text sections that doesn't contain many line-breaks or special characters.
 
 ACSI written in C, and have some unix commands sprinkled in, so it needs to be run in a linux enviroment to work. 
 
@@ -16,7 +16,8 @@ There exist a few make commands to do other things than just a clean build:
 
 build,b:	builds without removing the .o files
 clean,c:	removes all .o files
-t:		removes all files with the .clean suffix, thus removing previously cleaned files
+tclean, tc:	removes all translated files(those with 'i18n-' prefix)
+test, t:	builds a `./test` instance you can have in parallel with your main `./acsi` 
 
 ## Use
 After running the `make` command, you need to make a copy of the file you want to change and place it in the same folder as ASCI is located.
@@ -24,7 +25,7 @@ After running the `make` command, you need to make a copy of the file you want t
 You can now call ASCI from the command line(when your command line have the ASCI as active directory): `./acsi <filename>.html` 
 
 You give the ACSI a html filename from the same directory, and ACSI will insert the i18n-tags as it sees fit, then saving the output as a new file with "i18n-"  as prefix.
-If everything worked out as it should, it should display a short `ASCI finished succesfully!` on the command line.
+If everything worked out as it should, it should display a short `ASCI translated <filename> successfully!` on the command line.
 
 ## Changelog
 
@@ -32,6 +33,7 @@ If everything worked out as it should, it should display a short `ASCI finished 
 - code cleanup
 - fixed credits typo
 - rewrote readme
+- Ignores html comments, sheetworkers and rolltemplates when creating `i18n`-tags
 
 ### V0.1
 - make data tags for text displayed in html elements, `<p>like this text</p>`
@@ -43,7 +45,6 @@ If everything worked out as it should, it should display a short `ASCI finished 
 ### V0.5 (Alpha)
 - makes less mistakes with creating tags
 - ignore `cs>` , `cs<` , `cf>`, `cf<` (credits to David for noticing)
-- Ignores html comments, sheet workers and roll templates
 - doesn't make duplicate tags
 
 ### V.1.0 and beyond
