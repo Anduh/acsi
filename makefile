@@ -1,13 +1,14 @@
 CC=gcc
 CFLAGS=-Wall -g -O0 -pedantic -std=c99 -D_POSIX_C_SOURCE
-DEPS = acsilib.h taglib.h
+DEPS = src/acsilib.h src/taglib.h
+
 .DEFAULT_GOAL := default 
 
 %.o: %.c $(DEPS)
 	$(CC) $(CFLAGS) -c -o $@ $< 
 
-main: main.o acsilib.o taglib.o
-	$(CC) -o acsi main.c acsilib.c taglib.c
+main: src/main.o src/acsilib.o src/taglib.o
+	$(CC) -o acsi src/main.c src/acsilib.c src/taglib.c
 clean:
 	rm -f *.o
 tclean:
@@ -15,8 +16,8 @@ tclean:
 
 default: main clean
 
-test: main.o acsilib.o taglib.o
-	$(CC) -o test main.c acsilib.c taglib.c
+test: src/main.o src/acsilib.o src/taglib.o
+	$(CC) -o test src/main.c src/acsilib.c src/taglib.c
 
 t: test
 
