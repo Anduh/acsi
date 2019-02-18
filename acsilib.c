@@ -70,7 +70,15 @@ void readcode(char* string){
 	char c;
 	//Main section of the program. searches through the inputfile until it finds a relevant character that results in jumping to work with the 'taglib.c' functions.
 	while((c=fgetc(fip))!=EOF){
-		txtfind(c,fip,fop);
+		if (c == 's' || c == 'r'){
+			fputc(c,fop);
+			scriptsearch(fip,fop);
+		}		
+		else if (c == '>'){
+			txtfind(fip,fop);
+		}
+		else
+			fputc(c,fop);
 	}
 	addcredits(fop);
 	fclose(fip);
@@ -80,6 +88,6 @@ void readcode(char* string){
 }
 
 void addcredits(FILE *fop){
-	fprintf(fop, "\n\n<!--\n------------- i18n-tags generated with ACSI V0.1 (Automated Character Sheet Internationalizer)-------------\n\tACSI author: github.com/Anduh\n\n");
+	fprintf(fop, "\n\n<!--\n------------- i18n-tags generated with ACSI V0.2 (Automated Character Sheet Internationalizer)-------------\n\tACSI author: github.com/Anduh\n\tSource: github.com/Anduh/acsi\n-->");
 	return;
 }

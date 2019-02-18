@@ -21,15 +21,16 @@ int main (int argc, char *argv[]){
 		fprintf(stderr,"ACSI Usage: ./acsi <filename>\n");
 		exit(-1);
 	}
+	char *temp = malloc(50*sizeof(char));
+	strcpy(temp, argv[1]);
 	if ((childpid = fork()) == 0){
 		sigaction(SIGINT, &sa, NULL);// starts signal handler 
-		char *temp = malloc(50*sizeof(char));
 		strcpy(temp, argv[1]);
 		readcode(temp);//main portion of the program
-		free(temp);
 		exit(0);
 	}
 	while ((parentpid = wait(&status)) > 0);
-	printf("ASCI finished succesfully!\n");
+	printf("ASCI created 'i18n-%s' succesfully!\n",temp);
+	free(temp);
 	return 1;
 }

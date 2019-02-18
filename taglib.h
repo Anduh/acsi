@@ -9,8 +9,11 @@ typedef struct translationtaglist {
 	struct translationtaglist *next;
 } Taglist;
 
-void txtfind(char a, FILE *fip, FILE *fop);
+void txtfind(FILE *fip, FILE *fop);
 int savetxt(FILE *fip, char *tempstr);
 char *tagname(char *txtstr);
-void placetag(FILE *fop, char *tag, char *tempstr);
+void placetag(FILE *fop, char *tag);
+void placestr(FILE *fop, char *tempstr);
+void scriptsearch(FILE *fip, FILE *fop);
+void skipscript(FILE *fip, FILE *fop);
 void savelist(Taglist *list, int *listsize, char *tag, char *tempstr);
