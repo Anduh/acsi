@@ -13,7 +13,7 @@ void txtfind(FILE *fip, FILE *fop){
 	char *tempstr = malloc(301*sizeof(char));
 	char *tagstr = malloc(22*sizeof(char));
 	
-	if(savetxt(fip, tempstr) <= 1){ // if the section between two html tags contains only spaces and tabs, it ignore the the section and moves on 
+	if(savetxt(fip, tempstr) <= 2){ // if the section between two html tags contains only spaces and tabs, it ignore the the section and moves on 
 		fputc('>',fop);
 		fprintf(fop, "%s", tempstr);
 		free(tempstr);
@@ -21,7 +21,7 @@ void txtfind(FILE *fip, FILE *fop){
 		return;
 	}
 	strcpy(tagstr, tagname(tempstr)); //creates a i18n-tagname based on the il8n-field
-	if (strlen(tagstr) >= 4)	
+	if (strlen(tagstr) >= 3)	
 		placetag(fop, tagstr); //copies the tagname & of i18n-field in the output file
 	placestr(fop, tempstr);
 	free(tempstr);
@@ -51,7 +51,7 @@ int savetxt(FILE *fip, char *tempstr){//copies the content of the il8n-field
 	
 	tempstr[i] = '\0';
 	if (aflag >= 2){
-		//printf("Visible txt: ---> %s  <-----\n",tempstr);
+		printf("Visible txt: ---> %s  <-----\n",tempstr);
 	}
 	return aflag;
 }
@@ -86,7 +86,7 @@ char *tagname(char *txtstr){
 	else{
 		tagstr[x] = '\0';
 	}
-	//printf("TAGNAME: %s  <----------\n",tagstr);
+	printf("TAGNAME: %s  <----------\n",tagstr);
 	return tagstr;
 }
 
@@ -101,14 +101,47 @@ void placestr(FILE *fop, char *tempstr){//places the segment analyzed for
 }
 
 void scriptsearch(FILE *fip, FILE *fop){// searches for sections with '<script *>'
-	char a,b,c;
-	if((a=fgetc(fip))=='s'){
+	char a,b,c,d,e,f;
+	if((a=fgetc(fip))=='c'){
 		if((b=fgetc(fip))=='r'){
 			if((c=fgetc(fip))=='i'){
-				fputc(a,fop);
-				fputc(b,fop);
-				fputc(c,fop);
-				skipscript(fip,fop);
+				if((d=fgetc(fip))=='p'){
+					if((e=fgetc(fip))=='t'){
+						if((f=fgetc(fip))==' '){
+							printf("scriptsearch 3 started\n");
+							fputc(a,fop);
+							fputc(b,fop);
+							fputc(c,fop);
+							fputc(d,fop);
+							fputc(e,fop);
+							fputc(f,fop);
+							printf("scriptskip started\n");
+							skipscript(fip,fop);
+							return;
+						}
+						else {
+							fputc(a,fop);
+							fputc(b,fop);
+							fputc(c,fop);
+							fputc(d,fop);
+							fputc(e,fop);
+							fputc(f,fop);
+						}
+					}
+					else{
+						fputc(a,fop);
+						fputc(b,fop);
+						fputc(c,fop);
+						fputc(d,fop);
+						fputc(e,fop);
+					}
+				}
+				else{
+					fputc(a,fop);
+					fputc(b,fop);
+					fputc(c,fop);
+					fputc(d,fop);
+				}
 			}
 			else{
 				fputc(a,fop);
@@ -120,6 +153,30 @@ void scriptsearch(FILE *fip, FILE *fop){// searches for sections with '<script *
 			fputc(a,fop);
 			fputc(b,fop);
 		}			
+	}
+	else if(a == 'o'){
+		if((b=fgetc(fip))=='l'){
+			if((c=fgetc(fip))=='l'){
+				if((d=fgetc(fip))=='t'){
+					fputc(a,fop);
+					fputc(b,fop);
+					fputc(c,fop);
+					fputc(d,fop);
+					printf("rollskip started\n");
+					skipscript(fip,fop);
+					return;
+				}
+			}
+			else{
+				fputc(a,fop);
+				fputc(b,fop);
+				fputc(c,fop);
+			}
+		}
+		else{
+			fputc(a,fop);
+			fputc(b,fop);
+		}	
 	}
 	else{
 		fputc(a,fop);
@@ -133,23 +190,45 @@ void skipscript(FILE *fip, FILE *fop){//skips character until if finds '</script
 		if(a=='<'){
 			if((b=fgetc(fip)) =='/'){
 				if((c=fgetc(fip)) =='s'){
-					if((d=fgetc(fip)) =='r'){
-						if((e=fgetc(fip)) =='i'){
-							if((f=fgetc(fip)) =='p'){
-								if((g=fgetc(fip)) =='t'){
-									if((h=fgetc(fip)) =='>'){
-										break;
+					if((d=fgetc(fip)) =='c'){
+						printf("</script> found\n");
+						if((e=fgetc(fip)) =='r'){
+							if((f=fgetc(fip)) =='i'){
+								if((g=fgetc(fip)) =='p'){
+									if((h=fgetc(fip)) =='t'){
+											fprintf(fop,"</script");
+										printf("script found\n");
+										return;
 									}
 								}
 							}
 						}
 					}
+					else{
+					fputc(a, fop);
+					fputc(b, fop);
+					fputc(c, fop);
+					fputc(d, fop);
+					}
+				}else if(c== 'r'){
+					printf("</rolltemplate> found\n");
+					fprintf(fop,"</rolltemplate>\n\n");
+					fseek(fip, 14,SEEK_CUR);
+					return;
+				}else{
+					fputc(a, fop);
+					fputc(b, fop);
+					fputc(c, fop);
 				}
 			}
+			else{
+				fputc(a, fop);
+				fputc(b, fop);
+			}
 		}
-		fputc(a, fop);
+		else
+			fputc(a, fop);
 	}
-	fprintf(fop,"</script>\n");
 	return;
 }
 
