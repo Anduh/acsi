@@ -88,6 +88,6 @@ void readcode(char* string){
 }
 
 void addcredits(FILE *fop){
-	fprintf(fop, "\n\n<!--\n------------- i18n-tags generated with ACSI V0.2 (Automated Character Sheet Internationalizer)-------------\n\tACSI author: github.com/Anduh\n\tSource: github.com/Anduh/acsi\n\n-->");
+	fprintf(fop, "\n\n<!--\n------------- i18n-tags generated with ACSI V0.2 (Automated Character Sheet Internationalizer)-------------\n\tACSI author: github.com/Anduh\n\tSource: github.com/Anduh/acsi\n-->");
 	return;
 }
