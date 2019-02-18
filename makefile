@@ -10,7 +10,7 @@ DEPS = src/acsilib.h src/taglib.h
 main: src/main.o src/acsilib.o src/taglib.o
 	$(CC) -o acsi src/main.c src/acsilib.c src/taglib.c
 clean:
-	rm -f *.o
+	rm -f src/*.o
 tclean:
 	rm -f i18n-*
 

@@ -3,6 +3,7 @@
 *.css
 acsi
 test
+html/
 
 # Default ignores
 # Prerequisites
