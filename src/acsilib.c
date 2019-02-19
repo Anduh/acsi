@@ -47,7 +47,7 @@ void readcode(char *filename, char *arguments){
 	
 	char *html = ".html";
 	if (strstr(filename, html) == NULL){
-		fprintf(stderr,"Not a html file. ACSI Usage: ./acsi <filename> <arg>\n");
+		fprintf(stderr,"Not a html file. ACSI Usage: ./acsi <filename>\n");
 		exit(-1);
 	}
 	if (strchr(arguments, 't') != NULL){
@@ -92,6 +92,6 @@ void readcode(char *filename, char *arguments){
 }
 
 void addcredits(FILE *fop){
-	fprintf(fop, "\n\n<!--\n------------- i18n-tags generated with ACSI V0.2 (Automated Character Sheet Internationalizer)-------------\n\tACSI author: github.com/Anduh\n\tSource: github.com/Anduh/acsi\n-->");
+	fprintf(fop, "\n\n<!--\n------------- i18n-tags generated with ACSI V0.3 (Automated Character Sheet Internationalizer)-------------\n\tACSI author: github.com/Anduh\n\tSource: github.com/Anduh/acsi\n-->");
 	return;
 }
