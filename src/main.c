@@ -17,19 +17,24 @@ int main (int argc, char *argv[]){
 	int status = 0;
 	struct sigaction sa;
 	sa.sa_handler = handler;
-	if (argc != 2){
+	if (argc > 3){
 		fprintf(stderr,"ACSI Usage: ./acsi <filename>\n");
 		exit(-1);
 	}
-	char *temp = malloc(50*sizeof(char));
-	strcpy(temp, argv[1]);
+	char *filename = malloc(50*sizeof(char));
+	strcpy(filename, argv[1]);
+	char *arguments = malloc(10*sizeof(char));
+	strcpy(arguments, " ");
+	if (argv[2] != NULL){
+		strcpy(arguments, argv[2]);
+	}
 	if ((childpid = fork()) == 0){
 		sigaction(SIGINT, &sa, NULL);// starts signal handler 
-		strcpy(temp, argv[1]);
-		readcode(temp);//main portion of the program
+		readcode(filename, arguments);//main portion of the program
 		exit(0);
 	}
 	while ((parentpid = wait(&status)) > 0);
-	free(temp);
+	free(filename);
+	free(arguments);
 	return 1;
 }

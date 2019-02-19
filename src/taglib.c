@@ -9,18 +9,18 @@
 
 /* taglib.c contains all the functions that deal with searching throught the file and doing text manipulation*/
 
-void txtfind(FILE *fip, FILE *fop){
+void txtfind(FILE *fip, FILE *fop,int testmode){
 	char *tempstr = malloc(301*sizeof(char));
 	char *tagstr = malloc(22*sizeof(char));
 	
-	if(savetxt(fip, tempstr) <= 2){ // if the section between two html tags contains only spaces and tabs, it ignore the the section and moves on 
+	if(savetxt(fip, tempstr, testmode) <= 2){ // if the section between two html tags contains only spaces and tabs, it ignore the the section and moves on 
 		fputc('>',fop);
 		fprintf(fop, "%s", tempstr);
 		free(tempstr);
 		free(tagstr);
 		return;
 	}
-	strcpy(tagstr, tagname(tempstr)); //creates a i18n-tagname based on the il8n-field
+	strcpy(tagstr, tagname(tempstr, testmode)); //creates a i18n-tagname based on the il8n-field
 	if (strlen(tagstr) >= 3)	
 		placetag(fop, tagstr); //copies the tagname & of i18n-field in the output file
 	placestr(fop, tempstr);
@@ -30,7 +30,7 @@ void txtfind(FILE *fip, FILE *fop){
 	return;
 }
 
-int savetxt(FILE *fip, char *tempstr){//copies the content of the il8n-field
+int savetxt(FILE *fip, char *tempstr,int testmode){//copies the content of the il8n-field
 	char c;
 	int i;
 	int aflag = 0;	
@@ -50,13 +50,13 @@ int savetxt(FILE *fip, char *tempstr){//copies the content of the il8n-field
 	}
 	
 	tempstr[i] = '\0';
-	if (aflag >= 2){
+	if (aflag >= 2 && testmode == 1){
 		printf("Visible txt: ---> %s  <-----\n",tempstr);
 	}
 	return aflag;
 }
 
-char *tagname(char *txtstr){
+char *tagname(char *txtstr,int testmode){
 	//creates the 'i18n' tagname based on what the field contains, stripping numericals, special characters and spaces, reducing it to a reasonable length and making it lowercase
 	int x;
 	int caps = 0;
@@ -86,7 +86,8 @@ char *tagname(char *txtstr){
 	else{
 		tagstr[x] = '\0';
 	}
-	printf("TAGNAME: %s  <----------\n",tagstr);
+	if (testmode == 1)
+		printf("TAGNAME: %s  <----------\n",tagstr);
 	return tagstr;
 }
 
@@ -100,7 +101,7 @@ void placestr(FILE *fop, char *tempstr){//places the segment analyzed for
 	return;
 }
 
-void scriptsearch(FILE *fip, FILE *fop){// searches for sections with '<script *>'
+void scriptsearch(FILE *fip, FILE *fop,int testmode){// searches for sections with '<script *>'
 	char a,b,c,d,e,f;
 	if((a=fgetc(fip))=='c'){
 		if((b=fgetc(fip))=='r'){
@@ -108,15 +109,17 @@ void scriptsearch(FILE *fip, FILE *fop){// searches for sections with '<script *
 				if((d=fgetc(fip))=='p'){
 					if((e=fgetc(fip))=='t'){
 						if((f=fgetc(fip))==' '){
-							printf("scriptsearch 3 started\n");
+							if (testmode == 1)
+								printf("scriptsearch 3 started\n");
 							fputc(a,fop);
 							fputc(b,fop);
 							fputc(c,fop);
 							fputc(d,fop);
 							fputc(e,fop);
 							fputc(f,fop);
-							printf("scriptskip started\n");
-							skipscript(fip,fop);
+							if (testmode == 1)
+								printf("scriptskip started\n");
+							skipscript(fip,fop, testmode);
 							return;
 						}
 						else {
@@ -162,8 +165,9 @@ void scriptsearch(FILE *fip, FILE *fop){// searches for sections with '<script *
 					fputc(b,fop);
 					fputc(c,fop);
 					fputc(d,fop);
-					printf("rollskip started\n");
-					skipscript(fip,fop);
+					if (testmode == 1)
+						printf("rollskip started\n");
+					skipscript(fip,fop, testmode);
 					return;
 				}
 			}
@@ -184,20 +188,22 @@ void scriptsearch(FILE *fip, FILE *fop){// searches for sections with '<script *
 	return;
 }
 
-void skipscript(FILE *fip, FILE *fop){//skips character until if finds '</script>' that ends  sheetworker sections
+void skipscript(FILE *fip, FILE *fop,int testmode){//skips character until if finds '</script>' that ends  sheetworker sections
 	char a,b,c,d,e,f,g,h;
 	while((a=fgetc(fip))!=EOF){
 		if(a=='<'){
 			if((b=fgetc(fip)) =='/'){
 				if((c=fgetc(fip)) =='s'){
 					if((d=fgetc(fip)) =='c'){
-						printf("</script> found\n");
+						if (testmode == 1)
+							printf("</script> found\n");
 						if((e=fgetc(fip)) =='r'){
 							if((f=fgetc(fip)) =='i'){
 								if((g=fgetc(fip)) =='p'){
 									if((h=fgetc(fip)) =='t'){
 											fprintf(fop,"</script");
-										printf("script found\n");
+										if (testmode == 1)
+											printf("script found\n");
 										return;
 									}
 								}
@@ -211,7 +217,8 @@ void skipscript(FILE *fip, FILE *fop){//skips character until if finds '</script
 					fputc(d, fop);
 					}
 				}else if(c== 'r'){
-					printf("</rolltemplate> found\n");
+					if (testmode == 1)
+						printf("</rolltemplate> found\n");
 					fprintf(fop,"</rolltemplate>\n\n");
 					fseek(fip, 14,SEEK_CUR);
 					return;

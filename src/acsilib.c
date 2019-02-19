@@ -38,26 +38,29 @@ void errhandler(int errnum){
 		}
 }
 
-void readcode(char* string){
+void readcode(char *filename, char *arguments){
 	FILE *fip, *fop;
-	fip = fopen(string, "r");
+	int testmode = 0;
+	fip = fopen(filename, "r");
 	if(fip == NULL){
 		errhandler(errno);
 	}
-
 	
 	char *html = ".html";
-	if (strstr(string, html) == NULL){
+	if (strstr(filename, html) == NULL){
 		fprintf(stderr,"Not a html file. ACSI Usage: ./acsi <filename>\n");
 		exit(-1);
 	}
-	
+	if (strchr(arguments, 't') != NULL){
+		testmode = 1;	
+	}
+
 	char *outputfile;
-	outputfile = malloc((strlen(string)+7)*sizeof(char));
+	outputfile = malloc((strlen(filename)+7)*sizeof(char));
 
 	// creates the filename of the output file
 	strcpy(outputfile, "i18n-");
-	strcat(outputfile, string);
+	strcat(outputfile, filename);
 	
 	fop = fopen(outputfile, "w+");
 	//If the outputfile couldnt be opened, closes inputfile and frees outputname
@@ -72,10 +75,10 @@ void readcode(char* string){
 	while((c=fgetc(fip))!=EOF){
 		if (c == 's' || c == 'r'){
 			fputc(c,fop);
-			scriptsearch(fip,fop);
+			scriptsearch(fip,fop,testmode);
 		}		
 		else if (c == '>'){
-			txtfind(fip,fop);
+			txtfind(fip,fop,testmode);
 		}
 		else
 			fputc(c,fop);

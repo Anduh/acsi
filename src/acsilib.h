@@ -4,7 +4,7 @@
 
 void handler(int signo);
 void errhandler(int errnum);
-void readcode(char *string);
+void readcode(char *filename,char *arguments);
 void addcredits(FILE *fop);
 
 
