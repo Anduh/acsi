@@ -9,7 +9,6 @@
 #include <sys/file.h>
 #include <signal.h>
 #include <errno.h>
-#include <syslog.h>
 #include <unistd.h>
 #include "acsilib.h"
 #include "taglib.h"
@@ -48,10 +47,11 @@ void readcode(char *filename, char *arguments){
 	
 	char *html = ".html";
 	if (strstr(filename, html) == NULL){
-		fprintf(stderr,"Not a html file. ACSI Usage: ./acsi <filename>\n");
+		fprintf(stderr,"Not a html file. ACSI Usage: ./acsi <filename> <arg>\n");
 		exit(-1);
 	}
 	if (strchr(arguments, 't') != NULL){
+		//if the user gave a secondary argument 't', ACSI will printf additional info on the command line while running the rest of the program 
 		testmode = 1;	
 	}
 

@@ -26,6 +26,7 @@ int main (int argc, char *argv[]){
 	char *arguments = malloc(10*sizeof(char));
 	strcpy(arguments, " ");
 	if (argv[2] != NULL){
+		//copies and saves secondary arguments from the user, like 't' for test or similar
 		strcpy(arguments, argv[2]);
 	}
 	if ((childpid = fork()) == 0){
