@@ -10,15 +10,18 @@ ACSI is written in C, and relies on a few Unix , so it needs to be run in a Linu
 
 # Install/Run
 1. Download the project (`clone https://github.com/Anduh/acsi.git` is probably easiest)
-2. Open the command line command in the `acsi` folder and run the `make` command. ACSI should compile now from the files in the `/src` folder.
+2. Open the command line command in the `acsi` folder and run `make` command. ACSI should compile now from the files in the `/src` folder.
 
 ## Makefile options
 There exist a few make commands to do other things than just a clean build:
 
-build,b:	builds without removing the .o files
-clean,c:	removes all .o files
-tclean, tc:	removes all translated files(those with 'i18n-' prefix)
-test, t:	builds a `test` instance you can have in parallel with your main `acsi` 
+**build,b**:	builds without removing the .o files
+
+**clean,c**:	removes all .o files
+
+**tclean, tc**:	removes all translated files(those with 'i18n-' prefix)
+
+**test, t**:	builds a `test` instance you can have in parallel with your main `acsi` 
 
 # Use
 After having compiled ACSI, you need to place the html file you want translated in the same folder as ACSI is located. A testfile `testsheet.html` is provided so you can try it out right away(try run `./acsi testsheet.html`).
