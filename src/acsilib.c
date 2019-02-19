@@ -45,12 +45,12 @@ void readcode(char* string){
 		errhandler(errno);
 	}
 
-	/*
+	
 	char *html = ".html";
 	if (strstr(string, html) == NULL){
 		fprintf(stderr,"Not a html file. ACSI Usage: ./acsi <filename>\n");
 		exit(-1);
-	}*/
+	}
 	
 	char *outputfile;
 	outputfile = malloc((strlen(string)+7)*sizeof(char));
@@ -80,6 +80,7 @@ void readcode(char* string){
 		else
 			fputc(c,fop);
 	}
+	printf("%s created.\n",outputfile);
 	addcredits(fop);
 	fclose(fip);
 	fclose(fop);

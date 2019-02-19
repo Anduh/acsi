@@ -30,7 +30,6 @@ int main (int argc, char *argv[]){
 		exit(0);
 	}
 	while ((parentpid = wait(&status)) > 0);
-	printf("ASCI created 'i18n-%s' successfully!\n",temp);
 	free(temp);
 	return 1;
 }
