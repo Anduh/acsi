@@ -4,6 +4,8 @@
 acsi
 test
 html/
+# provides a sheet for testing
+!testsheet.html
 
 # Default ignores
 # Prerequisites
