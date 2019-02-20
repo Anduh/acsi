@@ -1,17 +1,22 @@
-# ACSI V0.31
-Automated Character Sheet Internationalizer (ACSI) is a simple program to partially automate the [internationalization](https://wiki.roll20.net/Character_Sheet_i18n) of existing [HTML Character Sheets](https://github.com/Roll20/roll20-character-sheets) made for the [Roll20 platform](https://en.wikipedia.org/wiki/Roll20). It takes a html file, creates a copy where it places `i18n`-tags according to some of the [Character Sheet i18n](https://wiki.roll20.net/Character_Sheet_i18n) standard.
+# ACSI
+![version](https://img.shields.io/badge/version-0.31-yellowgreen.svg) ![platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg) ![stars](https://img.shields.io/github/stars/Anduh/acsi.svg?style=social)
+
+![sheets translated](https://img.shields.io/badge/Sheets%20Translated-2-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/Anduh/acsi.svg)
+
+**Automated Character Sheet Internationalizer (ACSI)** is a simple program to partially automate the [internationalization](https://wiki.roll20.net/Character_Sheet_i18n) of existing [HTML Character Sheets](https://github.com/Roll20/roll20-character-sheets) made for the [Roll20 platform](https://en.wikipedia.org/wiki/Roll20). It takes a html file, creates a copy where it places `i18n`-tags according to some of the [Character Sheet i18n](https://wiki.roll20.net/Character_Sheet_i18n) standard.
 Works at least on **Ubuntu 16.04 LTS**, probably on most other Linux distros.
 
 
-At it's current state(**V0.31**), ACSI can only create i18n-tags for [standard text](https://wiki.roll20.net/Character_Sheet_i18n#Standard_Text), that doesn't contain many line-breaks or special characters. It attempts to ignores sections inside `<script type="text/worker"> </script>` and `<rolltemplate> </rolltemplate>`. If a sheet contains lots of commented html code, ACSI might be thrown off and produce an unusable result. ACSI is also assumed to be used on a sheet containing no i18n-tags or html error, as it isn't yet capable of noticing existing tags or if the sheet contains html syntax errors.
+At it's current state, ACSI can only create i18n-tags for [standard text](https://wiki.roll20.net/Character_Sheet_i18n#Standard_Text), that doesn't contain many line-breaks or special characters. It attempts to ignores sections inside `<script type="text/worker"> </script>` and `<rolltemplate> </rolltemplate>`. If a sheet contains lots of commented html code, ACSI might be thrown off and produce an unusable result. ACSI is also assumed to be used on a sheet containing no i18n-tags or html error, as it isn't yet capable of noticing existing tags or if the sheet contains html syntax errors.
 
 ACSI isn't too exact when it searches for sections it want to translate or avoid, so especially sections containing `script` or `rolltemplate` outside the `<script>` and <rolltemplate> can introduce more errors. 
 
 ACSI is written in C, and relies on a few Unix commands, so it needs to be run in a Linux enviroment to work(Project author uses Ubuntu 16.4 TLS). Doesn't rely on any advanced libraries. 
 
 # Install/Run
-1. Download the project (`clone https://github.com/Anduh/acsi.git` is probably easiest)
-2. Open the command line command in the `acsi` folder and run `make` command. ACSI should compile now from the files in the `/src` folder.
+- **1.** Download the project (`clone https://github.com/Anduh/acsi.git` is probably easiest)
+- **2A.** Open the command line command in the `acsi` folder and run `make` command. ACSI should compile now from the files in the `/src` folder.
+- **2B.** Install the `.deb` package from the `/linux/` folder
 
 ## Makefile options
 There exist a few make commands to do other things than just a clean build:
