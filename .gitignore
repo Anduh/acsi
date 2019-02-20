@@ -4,6 +4,13 @@
 acsi
 test
 html/
+html/**
+DEBIAN/
+DEBIAN/**
+usr/
+usr/**
+**/control
+
 # provides a sheet for testing
 !testsheet.html
 
