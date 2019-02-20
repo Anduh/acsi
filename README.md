@@ -1,6 +1,7 @@
 # ACSI
-![version](https://img.shields.io/badge/version-0.31-yellowgreen.svg) ![platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg) ![sheets translated](https://img.shields.io/badge/Sheets%20Translated-2-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/Anduh/acsi.svg)
-![stars](https://img.shields.io/github/stars/Anduh/acsi.svg?style=social)
+![version](https://img.shields.io/badge/version-0.31-yellowgreen.svg) ![platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg) ![stars](https://img.shields.io/github/stars/Anduh/acsi.svg?style=social)
+
+![sheets translated](https://img.shields.io/badge/Sheets%20Translated-2-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/Anduh/acsi.svg)
 
 **Automated Character Sheet Internationalizer (ACSI)** is a simple program to partially automate the [internationalization](https://wiki.roll20.net/Character_Sheet_i18n) of existing [HTML Character Sheets](https://github.com/Roll20/roll20-character-sheets) made for the [Roll20 platform](https://en.wikipedia.org/wiki/Roll20). It takes a html file, creates a copy where it places `i18n`-tags according to some of the [Character Sheet i18n](https://wiki.roll20.net/Character_Sheet_i18n) standard.
 Works at least on **Ubuntu 16.04 LTS**, probably on most other Linux distros.
