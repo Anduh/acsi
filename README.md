@@ -25,7 +25,7 @@ There exist a few make commands to do other things than just a clean build:
 **test, t**:	builds a `test` instance you can have in parallel with your main `acsi` 
 
 # Use
-After having compiled ACSI, you need to place the html file you want translated in the same folder as ACSI is located. A testfile `testsheet.html` is provided so you can try it out right away(try run `./acsi testsheet.html`).
+After having compiled ACSI, you need to place the html file you want translated in the same folder as ACSI is located. A good testfile can be found [here](https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/D6StarWars/D6StarWars.html).
 
 You can now call ACSI from the command line(when your command line have the ACSI as active directory): `./acsi <filename>`, where you replace `<filename>` with the name of your file(must be a `.html` file).
 
