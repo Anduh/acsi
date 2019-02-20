@@ -17,7 +17,7 @@ int main (int argc, char *argv[]){
 	int status = 0;
 	struct sigaction sa;
 	sa.sa_handler = handler;
-	if (argc > 3){
+	if (argc > 3 || argc == 1){
 		fprintf(stderr,"ACSI Usage: ./acsi <filename>\n");
 		exit(-1);
 	}
