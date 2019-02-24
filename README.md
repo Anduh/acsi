@@ -4,19 +4,20 @@
 ![sheets translated](https://img.shields.io/badge/Sheets%20Translated-2-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/Anduh/acsi.svg)
 
 **Automated Character Sheet Internationalizer (ACSI)** is a simple program to partially automate the [internationalization](https://wiki.roll20.net/Character_Sheet_i18n) of existing [HTML Character Sheets](https://github.com/Roll20/roll20-character-sheets) made for the [Roll20 platform](https://en.wikipedia.org/wiki/Roll20). It takes a html file, creates a copy where it places `i18n`-tags according to some of the [Character Sheet i18n](https://wiki.roll20.net/Character_Sheet_i18n) standard.
-Works at least on **Ubuntu 16.04 LTS**, probably on most other Linux distros.
 
 
 At it's current state, ACSI can only create i18n-tags for [standard text](https://wiki.roll20.net/Character_Sheet_i18n#Standard_Text), that doesn't contain many line-breaks or special characters. It attempts to ignores sections inside `<script type="text/worker"> </script>` and `<rolltemplate> </rolltemplate>`. If a sheet contains lots of commented html code, ACSI might be thrown off and produce an unusable result. ACSI is also assumed to be used on a sheet containing no i18n-tags or html error, as it isn't yet capable of noticing existing tags or if the sheet contains html syntax errors.
 
 ACSI isn't too exact when it searches for sections it want to translate or avoid, so especially sections containing `script` or `rolltemplate` outside the `<script>` and <rolltemplate> can introduce more errors. 
 
-ACSI is written in C, and relies on a few Unix commands, so it needs to be run in a Linux enviroment to work(Project author uses Ubuntu 16.4 TLS). Doesn't rely on any advanced libraries. 
+ACSI is written in C, and relies on a few Unix commands, so it needs to be run in a Linux enviroment to work(Project author uses Ubuntu 16.4 TLS/Linux Mint 19.1). Doesn't rely on any advanced libraries. 
 
 # Install/Run
 - **1.** Download the project (`clone https://github.com/Anduh/acsi.git` is probably easiest)
 - **2A.** Open the command line command in the `acsi` folder and run `make` command. ACSI should compile now from the files in the `/src` folder.
 - **2B.** Install the `.deb` package from the `/linux/` folder
+
+If it throws errors such as `missing five stdio.h` or similar, you might need to also install the  `build-essential` package. 
 
 ## Makefile options
 There exist a few make commands to do other things than just a clean build:
@@ -27,7 +28,15 @@ There exist a few make commands to do other things than just a clean build:
 
 **tclean, tc**:	removes all translated files(those with 'i18n-' prefix)
 
-**test, t**:	builds a `test` instance you can have in parallel with your main `acsi` 
+**test, t**:	builds a `test` instance you can have in parallel with your main `acsi`
+
+## Tested platforms
+List of operating systems that ACSI have been successfully installed/compiled on.
+
+**Linux:**
+- Ubuntu 16.4 TLS
+- Ubuntu 18.4 TLS
+- Linux Mint 19.1 (required install of `build-essential` package)
 
 # Use
 After having compiled ACSI, you need to place the html file you want translated in the same folder as ACSI is located. A good testfile can be found [here](https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/D6StarWars/D6StarWars.html).
