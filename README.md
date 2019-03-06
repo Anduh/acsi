@@ -64,6 +64,10 @@ If you run `./acsi <filename> t`, ACSI will print some extra info while running 
 
 # Changelog
 
+## V0.32 (2019-03-06)
+- fixed segfault
+- uploaded v0.32 .deb package
+
 ## V0.31 (2019-02-20)
 - add .gitattribute to force LF line endings
 
