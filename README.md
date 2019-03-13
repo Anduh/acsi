@@ -24,17 +24,6 @@
 
 If it throws errors such as `missing file stdio.h` or similar, you might need to also install the  `build-essential` package. 
 
-## Makefile options
-There exist a few make commands to do other things than just a clean build:
-
-**build,b**:	builds without removing the `.o` files
-
-**clean,c**:	removes all `.o` files
-
-**tclean, tc**:	removes all translated files(those with `i18n-` prefix)
-
-**test, t**:	builds a identical version named `test`, which can be handy if you work  `acsi`
-
 ## Tested platforms
 List of operating systems that ACSI have been successfully installed/compiled on.
 
