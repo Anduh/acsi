@@ -1,5 +1,5 @@
 # ACSI - Automated Character Sheet Internationalizer
-![version](https://img.shields.io/badge/version-0.31-yellowgreen.svg) ![platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg) ![stars](https://img.shields.io/github/stars/Anduh/acsi.svg?style=social)
+![version](https://img.shields.io/badge/version-0.32-yellowgreen.svg) ![platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg) ![stars](https://img.shields.io/github/stars/Anduh/acsi.svg?style=social)
 
 ![sheets translated](https://img.shields.io/badge/Sheets%20Translated-2-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/Anduh/acsi.svg)
 
