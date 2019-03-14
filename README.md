@@ -18,9 +18,10 @@
 * [Glossary](#glossary)
 
 # Install/Run
-- **Option 1:** Download the project(If you have `git` installed you can just run the command `git clone https://github.com/Anduh/acsi.git` and  it downloads everything)
-    - Then open the command line in the `acsi` folder and run `make` command. ACSI should compile now from the files in the `/src` folder into a new program file simply named 
-- **Option 2:** Download and install the [.deb](https://github.com/Anduh/acsi/raw/master/linux/acsi-v0.31.deb) package from the `/linux/` folder
+- **Option 1:** Download and install the [.deb](https://github.com/Anduh/acsi/raw/master/linux/acsi-v0.31.deb) package from the `/linux/` folder.
+- **Option 2:** Download the project(If you have `git` installed you can just run the command `git clone https://github.com/Anduh/acsi.git` and  it downloads everything)
+    - Then open the command line in the `acsi` folder and run `make` command. ACSI should compile now from the files in the `/src` folder into a new program file simply named `acsi`. (This is not a complete install, only create a local program that can be run inside the folder)
+
 
 If it throws errors such as `missing file stdio.h` or similar, you might need to also install the  `build-essential` package. 
 
@@ -33,12 +34,12 @@ List of operating systems that ACSI have been successfully installed/compiled on
 - Linux Mint 19.1 (required install of `build-essential` package)
 
 # Use
-After having compiled ACSI, you need to place the html file you want translated in the same folder as ACSI is located. A good testfile can be found [here](https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/D6StarWars/D6StarWars.html).
+If you installed ACSI with **Optinon 1**, you can now call ACSI from the command line with: `acsi <filename>`, where you replace `<filename>` with the name of your file you want translated(must be a `.html` file). Your command line terninal need to be open in the location where your file is located. 
 
-You can now call ACSI from the command line(when your command line have the ACSI as active directory): `./acsi <filename>`, where you replace `<filename>` with the name of your file(must be a `.html` file).
+If you installed ACSI with **Option 2**, you must place the html file you want translated in the same folder as ACSI is located. You can now call ACSI from the command line with: `./acsi <filename>`.
 
-ACSI will produce a new file (with `i18n` as prefix) where it insert the `i18n`-tags in the proper places without touching the original file.
-If everything worked out as it should, it should display a short `<i18n-filename> created!` on the command line.
+ACSI will produce a new file (with `i18n-` as prefix) where it insert the `i18n`-tags in the proper places, without touching the original file.
+If everything worked out as it should, it should display a short `<i18n-filename> created!` on the command line. A good testfile can be found [here](https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/D6StarWars/D6StarWars.html).
 
 ## Constraints
 
