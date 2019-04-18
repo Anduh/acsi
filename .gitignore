@@ -1,6 +1,7 @@
 # HTML/CSS ACSI test files
 *.html
 *.css
+*.json
 acsi
 test
 html/

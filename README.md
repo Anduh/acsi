@@ -1,7 +1,7 @@
 # ACSI - Automated Character Sheet Internationalizer
-![version](https://img.shields.io/badge/version-0.32-yellowgreen.svg) ![platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg) ![stars](https://img.shields.io/github/stars/Anduh/acsi.svg?style=social)
+![version](https://img.shields.io/badge/version-0.33-yellowgreen.svg) ![platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg) ![stars](https://img.shields.io/github/stars/Anduh/acsi.svg?style=social)
 
-![sheets translated](https://img.shields.io/badge/Sheets%20Translated-2-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/Anduh/acsi.svg)
+![sheets translated](https://img.shields.io/badge/Sheets%20Translated-3-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/Anduh/acsi.svg)
 
 # Basic Overview
 
@@ -23,7 +23,7 @@
     - Then open the command line in the `acsi` folder and run `make` command. ACSI should compile now from the files in the `/src` folder into a new program file simply named `acsi`. (This is not a complete install, only create a local program that can be run inside the folder)
 
 
-If it throws errors such as `missing file stdio.h` or similar, you might need to also install the  `build-essential` package. 
+If it throws errors such as `missing file stdio.h` or similar, you might need to also install the  `build-essential` package.
 
 ## Tested platforms
 List of operating systems that ACSI have been successfully installed/compiled on.
@@ -34,25 +34,30 @@ List of operating systems that ACSI have been successfully installed/compiled on
 - Linux Mint 19.1 (required install of `build-essential` package)
 
 # Use
-If you installed ACSI with **Optinon 1**, you can now call ACSI from the command line with: `acsi <filename>`, where you replace `<filename>` with the name of your file you want translated(must be a `.html` file). Your command line terninal need to be open in the location where your file is located. 
+If you installed ACSI with **Optinon 1**, you can now call ACSI from the command line with: `acsi <filename>`, where you replace `<filename>` with the name of your file you want translated(must be a `.html` file). Your command line terminal need to be open in the location where your file is located.
 
 If you installed ACSI with **Option 2**, you must place the html file you want translated in the same folder as ACSI is located. You can now call ACSI from the command line with: `./acsi <filename>`.
 
+**NOTE:** In V0.33, `rolltemplates` and `sheetworkers` should be removed from the HMTL so ACSI won't make changes to them.
+
 ACSI will produce a new file (with `i18n-` as prefix) where it insert the `i18n`-tags in the proper places, without touching the original file.
-If everything worked out as it should, it should display a short `<i18n-filename> created!` on the command line. A good testfile can be found [here](https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/D6StarWars/D6StarWars.html).
+If everything worked out as it should, it should display a short `<i18n-filename> created!` on the command line. A simple testfile can be found [here](https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/D6StarWars/D6StarWars.html).
 
 ## Constraints
 
-At it's current state, ACSI can only create `i18n`-tags for [standard text](https://wiki.roll20.net/Character_Sheet_i18n#Standard_Text), that doesn't contain many line-breaks or special characters. It attempts to ignores sections inside `<script type="text/worker"> </script>` and `<rolltemplate> </rolltemplate>`. If a sheet contains lots of commented html code, ACSI might be thrown off and produce an unusable result. ACSI is also assumed to be used on a sheet containing no i18n-tags or html error, as it isn't yet capable of noticing existing tags or if the sheet contains html syntax errors.
+At it's current state, ACSI can only create `i18n`-tags for [standard text](https://wiki.roll20.net/Character_Sheet_i18n#Standard_Text), that doesn't contain many line-breaks or special characters. ~~It attempts to ignores sections inside "<script type="text/worker"> </script>" and "<rolltemplate> </rolltemplate>"~~. If a sheet contains lots of commented HTML code, ACSI might be thrown off and produce an unusable result. ACSI is also assumed to be used on a sheet containing no i18n-tags or HTML error, as it isn't yet capable of noticing existing tags nor does it check the validity of HTML syntax.
 
-ACSI isn't too exact when it searches for sections it want to translate or avoid, so especially sections containing `script` or `rolltemplate` outside the `<script>` and <rolltemplate> can introduce more errors. 
+ACSI isn't too exact when it searches for sections it want to translate or avoid, so `<script>` and `<rolltemplate>` should be removed from the file for ACSI to work more reliably.
 
-ACSI is written in C, and relies on a few Unix commands, so it needs to be run in a Linux enviroment to work(Project author uses Ubuntu 16.4 TLS/Linux Mint 19.1). Doesn't rely on any advanced libraries. 
+ACSI is written in C, and relies on a few Unix commands, so it needs to be run in a Linux enviroment to work(Project author uses Ubuntu 16.4 TLS/Linux Mint 19.1). Doesn't rely on any advanced libraries.
 
 ## Optional
 If you run `./acsi <filename> t`, ACSI will print some extra info while running the program that can be helpful for debugging.
 
 # Changelog
+
+## V0.33 (2019-04-18)
+- removed malfunctioning functions that were searching for `rolltemplate` and `script` sections. It's better to remove those sections from the code before running ACSI than working with the somewhat unreliable **V0.32**
 
 ## V0.32 (2019-03-06)
 - fixed segfault
@@ -100,7 +105,7 @@ V.1.0 aims to reliably create 70-95% of i18n-tags for any given sheet, and provi
 - make tags for the more complex [Variable Replacement](https://wiki.roll20.net/Character_Sheet_i18n#Variable_Replacement) and [Roll Queries](https://wiki.roll20.net/Character_Sheet_i18n#Roll_Queries) methods
 
 
-## 'Nice To Have'(V.1.5) 
+## 'Nice To Have'(V.1.5)
 Option things that can be done that goes beyond the primary goal if ACSI
 - notice if files already have tags, and would only add missing tags
 - rewriting to not rely on linux-processes(getting rid of `unistd.h` and `sys/.h` libraries)
