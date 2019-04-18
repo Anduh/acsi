@@ -18,7 +18,7 @@
 * [Glossary](#glossary)
 
 # Install/Run
-- **Option 1:** Download and install the [.deb](https://github.com/Anduh/acsi/raw/master/linux/acsi-v0.31.deb) package from the `/linux/` folder.
+- **Option 1:** Download and install the [.deb](https://github.com/Anduh/acsi/raw/master/linux/acsi-v033.deb) package from the `/linux/` folder.
 - **Option 2:** Download the project(If you have `git` installed you can just run the command `git clone https://github.com/Anduh/acsi.git` and  it downloads everything)
     - Then open the command line in the `acsi` folder and run `make` command. ACSI should compile now from the files in the `/src` folder into a new program file simply named `acsi`. (This is not a complete install, only create a local program that can be run inside the folder)
 
