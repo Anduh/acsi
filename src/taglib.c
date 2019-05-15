@@ -72,10 +72,15 @@ char *tagname(char *txtstr,int testmode){
 				caps++;
 			}	
 			tagstr[x] = tolower(txtstr[x]);
-
 		}
-		else if(txtstr[x] == ' '){
-			tagstr[x] = '-';
+        else if(isdigit(txtstr[x])){
+            tagstr[x] = txtstr[x];
+        }
+        else if(txtstr[x] == ' '){
+            tagstr[x] = '-';
+        }
+		else if(txtstr[x] == '.' || txtstr[x] == ',' || txtstr[x] == ':' || txtstr[x] == ';' || txtstr[x] == '!' || txtstr[x] == '\n' || txtstr[x] == '\t' || txtstr[x] == '!' || txtstr[x] == '?' || txtstr[x] == '-'){
+            tagstr[x] = '-';
 		}
 	}
 	if(alpha != 0 && caps != 0 && alpha == caps){//if the content was completly uppercase, the tagname gets a '-u' suffix to distinguish it from sections that might contain identical content but have different case
@@ -83,6 +88,9 @@ char *tagname(char *txtstr,int testmode){
 		tagstr[x-1] = 'u';
 		tagstr[x] = '\0';	
 	}
+    if(tagstr[x-1] == '-'){
+        tagstr[x-1] = '\0';
+    }
 	else{
 		tagstr[x] = '\0';
 	}
