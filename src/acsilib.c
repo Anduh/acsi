@@ -106,7 +106,8 @@ void readcode(char *filename, char *arguments){
 		else
 			fputc(c,fop);
 	}
-    fprintf(fjson,"}");
+    fseek(fjson, -2, SEEK_CUR);
+    fprintf(fjson,"\n}");
 
     if (usemode == 0 || usemode == 1){
 	    printf("%screated.\n",outputfile);
