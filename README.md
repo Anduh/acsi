@@ -1,7 +1,7 @@
 # ACSI - Automated Character Sheet Internationalizer
-![version](https://img.shields.io/badge/version-0.33-yellowgreen.svg) ![platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg) ![stars](https://img.shields.io/github/stars/Anduh/acsi.svg?style=social)
+![version](https://img.shields.io/badge/version-0.5-yellowgreen.svg) ![platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg) ![stars](https://img.shields.io/github/stars/Anduh/acsi.svg?style=social)
 
-![sheets translated](https://img.shields.io/badge/Sheets%20Translated-3-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/Anduh/acsi.svg)
+![sheets translated](https://img.shields.io/badge/Sheets%20Translated-5-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/Anduh/acsi.svg)
 
 # Basic Overview
 
@@ -13,12 +13,13 @@
 	* [Tested platforms](#tested-platforms)
 * [Use](#use)
 	* [Constraints](#constraints)
+    * [Options](#otions)
 * [Changelog](#changelog)
 * [Project Plan](#project-aim-and-development-roadmap)
 * [Glossary](#glossary)
 
 # Install/Run
-- **Option 1:** Download and install the [.deb](https://github.com/Anduh/acsi/raw/master/linux/acsi-v033.deb) package from the `/linux/` folder.
+- **Option 1:** Download and install the latest [.deb](https://github.com/Anduh/acsi/raw/master/linux/) package from the `/linux/` folder.
 - **Option 2:** Download the project(If you have `git` installed you can just run the command `git clone https://github.com/Anduh/acsi.git` and  it downloads everything)
     - Then open the command line in the `acsi` folder and run `make` command. ACSI should compile now from the files in the `/src` folder into a new program file simply named `acsi`. (This is not a complete install, only create a local program that can be run inside the folder)
 
@@ -36,25 +37,34 @@ List of operating systems that ACSI have been successfully installed/compiled on
 # Use
 If you installed ACSI with **Optinon 1**, you can now call ACSI from the command line with: `acsi <filename>`, where you replace `<filename>` with the name of your file you want translated(must be a `.html` file). Your command line terminal need to be open in the location where your file is located.
 
-If you installed ACSI with **Option 2**, you must place the html file you want translated in the same folder as ACSI is located. You can now call ACSI from the command line with: `./acsi <filename>`.
+If you only compiled ACSI with **Option 2**, you must place the html file you want translated in the same folder as ACSI is located. You can now call ACSI from the command line with: `./acsi <filename>`.
 
-**NOTE:** In V0.33, `rolltemplates` and `sheetworkers` should be removed from the HMTL so ACSI won't make changes to them.
+**NOTE:** In V0.5, `rolltemplates` and `sheetworkers` should be removed from the HMTL so ACSI won't trip and make changes to them.
 
-ACSI will produce a new file (with `i18n-` as prefix) where it insert the `i18n`-tags in the proper places, without touching the original file.
-If everything worked out as it should, it should display a short `<i18n-filename> created!` on the command line. A simple testfile can be found [here](https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/D6StarWars/D6StarWars.html).
+ACSI will read the html file it is given and create a html file(named `<originalname>-i18n.html`) where it have inserted the `i18n`-tags in the proper places, without touching the original file, and optionally also the `.json` translation file, so it [doesn't have to be done with a broswer's developer console](https://wiki.roll20.net/Character_Sheet_i18n#Step_Two.2C_Generating_the_Translation_File).
+
+If everything worked out as it should, it should display a short `<filename>-i18n.html created!` on the command line. A simple testfile can be found [here](https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/D6StarWars/D6StarWars.html).
 
 ## Constraints
 
-At it's current state, ACSI can only create `i18n`-tags for [standard text](https://wiki.roll20.net/Character_Sheet_i18n#Standard_Text), that doesn't contain many line-breaks or special characters. ~~It attempts to ignores sections inside "<script type="text/worker"> </script>" and "<rolltemplate> </rolltemplate>"~~. If a sheet contains lots of commented HTML code, ACSI might be thrown off and produce an unusable result. ACSI is also assumed to be used on a sheet containing no i18n-tags or HTML error, as it isn't yet capable of noticing existing tags nor does it check the validity of HTML syntax.
-
-ACSI isn't too exact when it searches for sections it want to translate or avoid, so `<script>` and `<rolltemplate>` should be removed from the file for ACSI to work more reliably.
+At it's current state, ACSI can only create `i18n`-tags for [standard text](https://wiki.roll20.net/Character_Sheet_i18n#Standard_Text), that doesn't contain many line-breaks or special characters. If a sheet contains lots of commented HTML code, ACSI might be thrown off and produce an unusable result. ACSI is also assumed to be used on a sheet containing no i18n-tags or HTML error, as it isn't yet capable of noticing existing tags nor does it check the validity of HTML syntax.
 
 ACSI is written in C, and relies on a few Unix commands, so it needs to be run in a Linux enviroment to work(Project author uses Ubuntu 16.4 TLS/Linux Mint 19.1). Doesn't rely on any advanced libraries.
 
 ## Optional
-If you run `./acsi <filename> t`, ACSI will print some extra info while running the program that can be helpful for debugging.
+If you run `./acsi <filename> t`, ACSI will  additionally print in the console the generated tagnames and their contentents.
+
+If you run `./acsi <filename> j`, ACSI will generate the **translation file** with the name `<originalname>.json`.
+
+If you run `./acsi <filename> a`, it will do both options mentioned above.
 
 # Changelog
+
+## V0.50 (2019-05-14)
+- doesn't break html tags as often while creating the new file, some reason was due to poor transcribing by `savetxt()` function in some unusual linebreaks and unexpected characters
+- can optionally generate the **translation file** alongside creating the translated version of the sheet
+- doesn't any longer attempt to ignore html comments, sheetworkers and rolltemplates as the implementation did more harm than good. The advice is to strip the html file from rolltemplates and sheetworkers before being used with ACSI
+- minor code cleanup
 
 ## V0.33 (2019-04-18)
 - removed malfunctioning functions that were searching for `rolltemplate` and `script` sections. It's better to remove those sections from the code before running ACSI than working with the somewhat unreliable **V0.32**
@@ -84,7 +94,7 @@ If you run `./acsi <filename> t`, ACSI will print some extra info while running 
 # Project Aim and Development Roadmap
 The primary focus of the project is to prioritize on implementing the largest timesavers when it comes to creating `i18n`-tags, and in the end to automate as much as possible of the process. As a secondary goal it serves to improve programming/coding/documentation habits of the participants.
 
-ASCI has a "two birds, onestone" origin from a 'C/Unix'-programming course, which explains the not too optimal choice of C for a text-parsing program.
+ASCI has a "two birds, one stone" origin from a 'C/Unix'-programming course, which explains the not too optimal choice of C for a text-parsing program.
 If the interest arise, ACSI could be adapted/rewritten with other libraries/modules/languages for ease of further development, or just portability but it's of lower priority.
 
 ## 'Alpha' (V.0.5)
@@ -92,7 +102,7 @@ The aim for the Alpha version is to have ACSI reliably create 40-70% of the i18n
 
 - Makes less mistakes with creating tags(improve operation syntax)
 - Ignore `cs>` , `cs<` , `cf>`, `cf<` (credits to David for noticing)
-- Avoid creating duplicate tags and giving same tagname to sections that aren't identical to eachother
+- Avoid creating duplicate tags and giving same tagname to sections that aren't identical to each other
 
 ## 'Main Goal'(V.1.0)
 V.1.0 aims to reliably create 70-95% of i18n-tags for any given sheet, and provide more automation options, such as generating the associated `translation.json` file.
@@ -100,7 +110,7 @@ V.1.0 aims to reliably create 70-95% of i18n-tags for any given sheet, and provi
 - make tags for [Element Attribute Text](https://wiki.roll20.net/Character_Sheet_i18n#Element_Attribute_Text) like `title`, `label` and `placeholder`
 - make tags for [dropdown menu options](https://wiki.roll20.net/Character_Sheet_i18n#Dynamic_Key_Replacement)
 - make tags for [Roll Templates](https://wiki.roll20.net/Character_Sheet_i18n#Roll_Templates)
-- create the `translation.json` by itself (replicating the browser's [console.log()](https://wiki.roll20.net/Character_Sheet_i18n#Step_Two.2C_Generating_the_Translation_File) method)
+- ~create the `translation.json` by itself (replicating the browser's [console.log()](https://wiki.roll20.net/Character_Sheet_i18n#Step_Two.2C_Generating_the_Translation_File) method)~ Implemented in V0.5
 - push changes made to a `translation.json` file back to the sheet(so it will be easier to change the autogenerated tags)
 - make tags for the more complex [Variable Replacement](https://wiki.roll20.net/Character_Sheet_i18n#Variable_Replacement) and [Roll Queries](https://wiki.roll20.net/Character_Sheet_i18n#Roll_Queries) methods
 

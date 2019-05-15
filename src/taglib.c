@@ -9,20 +9,42 @@
 
 /* taglib.c contains all the functions that deal with searching throught the file and doing text manipulation*/
 
-void txtfind(FILE *fip, FILE *fop,int testmode){
+void txtfind(FILE *fip, FILE *fop, FILE *fjson,int usemode){
 	char *tempstr = malloc(301*sizeof(char));
-	char *tagstr = malloc(22*sizeof(char));
+    char *contentstr = malloc(301*sizeof(char));
+	char *tagstr = malloc(42*sizeof(char));
 	
-	if(savetxt(fip, tempstr, testmode) <= 2){ // if the section between two html tags contains only spaces and tabs, it ignore the the section and moves on 
+	if(savetxt(fip, tempstr, contentstr) <= 2){ // if the section between two html tags contains only spaces and tabs, it ignore the the section and moves on 
 		fputc('>',fop);
 		fprintf(fop, "%s", tempstr);
 		free(tempstr);
 		free(tagstr);
+        free(contentstr);
 		return;
 	}
-	strcpy(tagstr, tagname(tempstr, testmode)); //creates a i18n-tagname based on the il8n-field
-	if (strlen(tagstr) >= 3)	
+	strcpy(tagstr, tagname(tempstr)); //creates a i18n-tagname based on the il8n-field
+	if (strlen(tagstr) >= 3){	
 		placetag(fop, tagstr); //copies the tagname & of i18n-field in the output file
+        if (usemode == 1){//prints to console
+            printf("    \"%s\":",tagstr);
+            printf("\"%s\"\n\n",contentstr);
+        }
+        if (usemode == 2){//prints to json file and console
+            if(tagcheck(fjson,tagstr) == 0){
+                printf("    \"%s\":",tagstr);
+                printf("\"%s\"\n\n",contentstr);
+                
+                fprintf(fjson, "    \"%s\":",tagstr);
+                fprintf(fjson,"\"%s\",\n",contentstr);
+            }
+        }
+        if (usemode == 3){//prints only to json file
+            if (tagcheck(fjson,tagstr) == 0){
+                fprintf(fjson, "    \"%s\":",tagstr);
+                fprintf(fjson,"\"%s\",\n",contentstr);
+            }
+        }
+    }
 	placestr(fop, tempstr);
 	free(tempstr);
 	free(tagstr);
@@ -30,40 +52,48 @@ void txtfind(FILE *fip, FILE *fop,int testmode){
 	return;
 }
 
-int savetxt(FILE *fip, char *tempstr,int testmode){//copies the content of the il8n-field
+int savetxt(FILE *fip, char *tempstr,char *contentstr){//copies the content of the il8n-field
 	char c;
 	int i;
+    int j = 0;
 	int aflag = 0;	
 	for(i = 0;i <= 300;i++){
 		c = fgetc(fip);
 		if (c == EOF){
 			break;
 		}
-		tempstr[i] = c;
-		if(c == '<'){
-			i++;
-			break;
-		}
+        if (c == '\n' || c == '\t' || c == '\v' || c == '\f'  || c == '\r'  || c == '\b'){
+            tempstr[i] = c;
+        }
+        if (aflag == 0 && c == ' '){
+            tempstr[i] = c;
+        }
+        else{
+            tempstr[i] = c;
+            	if(c == '<'){
+			        i++;
+			        break;
+		        }
+            strncat(contentstr, &c, 1);
+            j++;
+        }
 		if(isalpha(c)){
 			aflag++;
 		}
 	}
-	
 	tempstr[i] = '\0';
-	if (aflag >= 2 && testmode == 1){
-		printf("Visible txt: ---> %s  <-----\n",tempstr);
-	}
+
 	return aflag;
 }
 
-char *tagname(char *txtstr,int testmode){
+char *tagname(char *txtstr){
 	//creates the 'i18n' tagname based on what the field contains, stripping numericals, special characters and spaces, reducing it to a reasonable length and making it lowercase
 	int x;
 	int caps = 0;
 	int alpha = 0;
-	char *tagstr = malloc(22*sizeof(char));
+	char *tagstr = malloc(42*sizeof(char));
 	for( x= 0;x < strlen(txtstr);x++){
-		if(x == 21){
+		if(x == 41){
 			break;
  		}
 		if(isalpha(txtstr[x])){
@@ -76,13 +106,17 @@ char *tagname(char *txtstr,int testmode){
         else if(isdigit(txtstr[x])){
             tagstr[x] = txtstr[x];
         }
-        else if(txtstr[x] == ' '){
+        else if(txtstr[x] == ' ' && alpha > 0){
             tagstr[x] = '-';
         }
-		else if(txtstr[x] == '.' || txtstr[x] == ',' || txtstr[x] == ':' || txtstr[x] == ';' || txtstr[x] == '!' || txtstr[x] == '\n' || txtstr[x] == '\t' || txtstr[x] == '!' || txtstr[x] == '?' || txtstr[x] == '-'){
+        else if(txtstr[x] == '\n' || txtstr[x] == '\t'){
+            tagstr[x] = '-';
+        }
+        else if(ispunct(txtstr[x])){
             tagstr[x] = '-';
 		}
 	}
+
 	if(alpha != 0 && caps != 0 && alpha == caps){//if the content was completly uppercase, the tagname gets a '-u' suffix to distinguish it from sections that might contain identical content but have different case
 		tagstr[x-2] = '-';
 		tagstr[x-1] = 'u';
@@ -94,8 +128,6 @@ char *tagname(char *txtstr,int testmode){
 	else{
 		tagstr[x] = '\0';
 	}
-	if (testmode == 1)
-		printf("TAGNAME: %s  <----------\n",tagstr);
 	return tagstr;
 }
 
@@ -109,150 +141,23 @@ void placestr(FILE *fop, char *tempstr){//places the segment analyzed for
 	return;
 }
 
-void scriptsearch(FILE *fip, FILE *fop,int testmode){// searches for sections with '<script *>'
-	char a,b,c,d,e,f;
-	if((a=fgetc(fip))=='c'){
-		if((b=fgetc(fip))=='r'){
-			if((c=fgetc(fip))=='i'){
-				if((d=fgetc(fip))=='p'){
-					if((e=fgetc(fip))=='t'){
-						if((f=fgetc(fip))==' '){
-							if (testmode == 1)
-								printf("scriptsearch 3 started\n");
-							fputc(a,fop);
-							fputc(b,fop);
-							fputc(c,fop);
-							fputc(d,fop);
-							fputc(e,fop);
-							fputc(f,fop);
-							if (testmode == 1)
-								printf("scriptskip started\n");
-							skipscript(fip,fop, testmode);
-							return;
-						}
-						else {
-							fputc(a,fop);
-							fputc(b,fop);
-							fputc(c,fop);
-							fputc(d,fop);
-							fputc(e,fop);
-							fputc(f,fop);
-						}
-					}
-					else{
-						fputc(a,fop);
-						fputc(b,fop);
-						fputc(c,fop);
-						fputc(d,fop);
-						fputc(e,fop);
-					}
-				}
-				else{
-					fputc(a,fop);
-					fputc(b,fop);
-					fputc(c,fop);
-					fputc(d,fop);
-				}
-			}
-			else{
-				fputc(a,fop);
-				fputc(b,fop);
-				fputc(c,fop);
-			}
-		}
-		else{
-			fputc(a,fop);
-			fputc(b,fop);
-		}			
-	}
-	else if(a == 'o'){
-		if((b=fgetc(fip))=='l'){
-			if((c=fgetc(fip))=='l'){
-				if((d=fgetc(fip))=='t'){
-					fputc(a,fop);
-					fputc(b,fop);
-					fputc(c,fop);
-					fputc(d,fop);
-					if (testmode == 1)
-						printf("rollskip started\n");
-					skipscript(fip,fop, testmode);
-					return;
-				}
-			}
-			else{
-				fputc(a,fop);
-				fputc(b,fop);
-				fputc(c,fop);
-			}
-		}
-		else{
-			fputc(a,fop);
-			fputc(b,fop);
-		}	
-	}
-	else{
-		fputc(a,fop);
-	}
-	return;
-}
+int tagcheck(FILE *fjson, char *tagname){
+    char str[400];
+    rewind(fjson);
+    
+    strcpy(str, "\"");
+    strcat(str, tagname);
+    strcat(str, "\"");    
 
-void skipscript(FILE *fip, FILE *fop,int testmode){//skips character until if finds '</script>' that ends  sheetworker sections
-	char a,b,c,d,e,f,g,h;
-	while((a=fgetc(fip))!=EOF){
-		if(a=='<'){
-			if((b=fgetc(fip)) =='/'){
-				if((c=fgetc(fip)) =='s'){
-					if((d=fgetc(fip)) =='c'){
-						if (testmode == 1)
-							printf("</script> found\n");
-						if((e=fgetc(fip)) =='r'){
-							if((f=fgetc(fip)) =='i'){
-								if((g=fgetc(fip)) =='p'){
-									if((h=fgetc(fip)) =='t'){
-											fprintf(fop,"</script");
-										if (testmode == 1)
-											printf("script found\n");
-										return;
-									}
-								}
-							}
-						}
-					}
-					else{
-					fputc(a, fop);
-					fputc(b, fop);
-					fputc(c, fop);
-					fputc(d, fop);
-					}
-				}else if(c== 'r'){
-					if (testmode == 1)
-						printf("</rolltemplate> found\n");
-					fprintf(fop,"</rolltemplate>\n\n");
-					fseek(fip, 14,SEEK_CUR);
-					return;
-				}else{
-					fputc(a, fop);
-					fputc(b, fop);
-					fputc(c, fop);
-				}
-			}
-			else{
-				fputc(a, fop);
-				fputc(b, fop);
-			}
-		}
-		else
-			fputc(a, fop);
-	}
-	return;
-}
+    while(1){
+        fgets(str, 399, fjson);
+        if (feof(fjson)){
+            break;
+        }
+        if (strstr(str, tagname) != NULL){
+            return 1;
+        }
 
-/*
-void savelist(Taglist *list, int *listsize, char *tag, char *tempstr){ //saves the tagname and the data
-	
-	strcpy(list[&listsize]->tag, tag);
-	strpcy(list[&listsize]->data, tempstr);
-	&listsize++;
-	
-	return;
-}*/
+    }
+    return 0;
+}
