@@ -97,15 +97,15 @@ The primary focus of the project is to prioritize on implementing the largest ti
 ASCI has a "two birds, one stone" origin from a 'C/Unix'-programming course, which explains the not too optimal choice of C for a text-parsing program.
 If the interest arise, ACSI could be adapted/rewritten with other libraries/modules/languages for ease of further development, or just portability but it's of lower priority.
 
-## 'Alpha' (V.0.5)
-The aim for the Alpha version is to have ACSI reliably create 40-70% of the i18n-tags for any given sheet, and not to get thrown off by to many stray html comments or special characters in unexpected places.
+## 'Alpha' (V.0.7)
+The aim for the Alpha version is to have ACSI reliably create 70% of the i18n-tags for any given sheet, and not to get thrown off by to many stray html comments or special characters in unexpected places.
 
-- Makes less mistakes with creating tags(improve operation syntax)
-- Ignore `cs>` , `cs<` , `cf>`, `cf<` (credits to David for noticing)
+- Ignore `cs>` , `cs<` , `cf>`, `cf<` found in some rolls (credits to David for noticing)
 - Avoid creating duplicate tags and giving same tagname to sections that aren't identical to each other
+- Skip `<script>`, `<rolltemplate>` and `<charmancer>` sections(sheetworkers) without altering them
 
 ## 'Main Goal'(V.1.0)
-V.1.0 aims to reliably create 70-95% of i18n-tags for any given sheet, and provide more automation options, such as generating the associated `translation.json` file.
+V.1.0 aims to reliably create 90% of i18n-tags for any given sheet, and provide more automation options, such as generating the associated `translation.json` file.
 
 - make tags for [Element Attribute Text](https://wiki.roll20.net/Character_Sheet_i18n#Element_Attribute_Text) like `title`, `label` and `placeholder`
 - make tags for [dropdown menu options](https://wiki.roll20.net/Character_Sheet_i18n#Dynamic_Key_Replacement)
@@ -116,12 +116,14 @@ V.1.0 aims to reliably create 70-95% of i18n-tags for any given sheet, and provi
 
 
 ## 'Nice To Have'(V.1.5)
-Option things that can be done that goes beyond the primary goal if ACSI
+Optional things that could be done which goes beyond the primary goal if ACSI but could be useful or be a good learning experience to implement
 - notice if files already have tags, and would only add missing tags
-- rewriting to not rely on linux-processes(getting rid of `unistd.h` and `sys/.h` libraries)
-- improve userfriendliness, like a GUI
-- creating a linux install package for ACSI, and implement most standard command line arguments
-- refactoring
+- rewriting to not rely on linux-processes(getting rid of `unistd.h` and `sys/.h` libraries), creating Windows/Mac version
+- making tags for Charactermancer sections
+- improve user-friendliness, a simple GUI?
+- rework to use more standard command-line syntax
+- refactoring search function
+- Roll20 specific errorchecking that general html validators don't catch. Checking all `<input>`,`<textarea>` fields are named with `attr_` prefixes, warn not to use `id`-attributes and other known [Roll20-specific constrains](https://wiki.roll20.net/Building_Character_Sheets#Restrictions_.26_Security_Filtering)
 
 # Glossary
 - **RCSi18n**: [Roll20 Character Sheet i18n](https://wiki.roll20.net/Character_Sheet_i18n) standard
